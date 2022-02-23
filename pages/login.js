@@ -1,10 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import Step_1 from '../components/Login/Step_1'
+import Step_2 from '../components/Login/Step_2'
 import Navbar from '../components/Navbar'
 
 const Login = () => {
 
+    const [activeTab, setActiveTab] = useState(1)
     const [phone, setPhone] = useState()
     const [otp, setOtp] = useState()
     const [error, setError] = useState({
@@ -18,9 +21,16 @@ const Login = () => {
             return setError({ ...error, phone: true })
         }
 
+        if (activeTab === 1) {
+            return setActiveTab(2)
+        }
+
         if (!otp) {
             return setError({ ...error, otp: true })
         }
+
+        console.log({ phone })
+
     }
 
     return (
@@ -31,31 +41,12 @@ const Login = () => {
             </Head>
 
             <div className="min-h-screen w-full flex flex-col justify-center items-center bg-black text-white">
-                <div className="card w-96 lg:border border-gray-600">
-                    <div className="card-body">
-                        <Image src="/logo.svg" height={80} width={70} objectFit="contain" alt="" />
-                        <h2 className="card-title text-4xl">Login</h2>
-                        <p className='mb-8 text-gray-400'>Continue with mobile number to reach number of developers waiting for you!</p>
-                        <form onSubmit={handleSubmit}>
-                            <label className='label'>
-                                <span className="label-text  text-white">Your Mobile Number</span>
-                            </label>
-                            <input type="number" onChange={(e) => {
-                                setPhone(e.target.value)
-                                setError({ ...error, phone: false })
-                            }}
-                                placeholder="Type here" className={`input input-bordered ${error.phone ? "border-red-500" : "border-gray-600"} w-full bg-transparent`}></input>
-                            {
-                                error.phone && <label className="label">
-                                    <span className="label-text text-red-500">Mobile Number is required!</span>
-                                </label>
-                            }
-                            <div className="justify-end card-actions mt-2">
-                                <button className='btn bg-black border-gray-600 hover:text-black hover:bg-white'>Continue</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                {
+                    activeTab === 1 && <Step_1 error={error} setError={setError} setPhone={setPhone} phone={phone} setActiveTab={setActiveTab} />
+                }
+                {
+                    activeTab === 2 && <Step_2 error={error} setError={setError} setOtp={setOtp} otp={otp} setActiveTab={setActiveTab} />
+                }
             </div>
         </main>
     )
