@@ -1,15 +1,29 @@
 import Image from 'next/image'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { setAuth } from '../../redux/authSlice'
+import { verifyOtp } from '../../services/apiClient'
 
 const Step_2 = ({ otp, setOtp, setError, error, setActiveTab }) => {
 
-    const handleNext = (e) => {
+    const dispatch = useDispatch()
+    const { phone, hash } = useSelector(state => state.auth.otp)
+
+    const handleNext = async (e) => {
         e.preventDefault()
 
         if (!otp) {
             return setError({ ...error, otp: true })
         }
-        console.log(otp)
+
+        try {
+            const { data } = await verifyOtp({ otp, phone, hash })
+            dispatch(setAuth(data))
+            console.log(data)
+        } catch (err) {
+            setError({ ...error, otp: true, msg: err?.response?.data?.msg })
+        }
     }
 
     const handleBack = () => {
@@ -38,7 +52,7 @@ const Step_2 = ({ otp, setOtp, setError, error, setActiveTab }) => {
 
                     {
                         error.otp && <label className="label">
-                            <span className="label-text text-red-500">OTP is required!</span>
+                            <span className="label-text text-red-500">{error.msg ? error.msg : "OTP is required!"}</span>
                         </label>
                     }
                     <div className="justify-end card-actions mt-2">

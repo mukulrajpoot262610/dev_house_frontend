@@ -12,7 +12,8 @@ const Login = () => {
     const [otp, setOtp] = useState()
     const [error, setError] = useState({
         phone: false,
-        otp: false
+        otp: false,
+        msg: ''
     })
 
     const handleSubmit = (e) => {

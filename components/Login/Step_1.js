@@ -1,19 +1,27 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { sendOtp } from '../../services/apiClient'
+import { useDispatch } from 'react-redux'
+import { setOtp } from '../../redux/authSlice'
 
 const Step_1 = ({ phone, setPhone, setError, error, setActiveTab }) => {
 
-
-    const handleNext = (e) => {
+    const dispatch = useDispatch()
+    const handleNext = async (e) => {
         e.preventDefault()
 
         if (!phone || phone.length !== 10) {
             return setError({ ...error, phone: true })
         }
 
-        setActiveTab(2)
-        console.log("+91" + phone)
+        try {
+            const { data } = await sendOtp({ phone: "+91" + phone })
+            dispatch(setOtp({ phone: data.phone, hash: data.hash }))
+            setActiveTab(2)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
