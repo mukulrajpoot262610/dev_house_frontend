@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -60,6 +61,9 @@ const Step_2 = ({ otp, setOtp, setError, error, setActiveTab }) => {
                         <button type='submit' className='btn bg-black border-gray-600 hover:text-black hover:bg-white'>Verify</button>
                     </div>
                 </form>
+                <Link href="/profile">
+                    <button className='btn bg-black border-gray-600 hover:text-black hover:bg-white'>Profile</button>
+                </Link>
             </div>
         </div>
     )
