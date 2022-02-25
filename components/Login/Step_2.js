@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -8,6 +9,7 @@ import { verifyOtp } from '../../services/apiClient'
 
 const Step_2 = ({ otp, setOtp, setError, error, setActiveTab }) => {
 
+    const router = useRouter()
     const dispatch = useDispatch()
     const { phone, hash } = useSelector(state => state.auth.otp)
 
@@ -21,7 +23,11 @@ const Step_2 = ({ otp, setOtp, setError, error, setActiveTab }) => {
         try {
             const { data } = await verifyOtp({ otp, phone, hash })
             dispatch(setAuth(data))
-            console.log(data)
+            if (data.user.activated) {
+                router.replace('/rooms')
+            } else {
+                router.replace('/profile')
+            }
         } catch (err) {
             setError({ ...error, otp: true, msg: err?.response?.data?.msg })
         }

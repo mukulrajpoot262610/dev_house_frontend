@@ -1,11 +1,17 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { BiSearchAlt } from 'react-icons/bi'
+
 import { MdOutlineGroupAdd } from 'react-icons/md'
 import RoomCard from '../components/Rooms/RoomCard'
+import Image from 'next/image'
+import CreateRoom from '../components/Modal/CreateRoom'
 
 const Rooms = () => {
+
+    const [showModal, setShowModal] = useState(false)
+
     return (
         <main>
             <Head>
@@ -29,7 +35,8 @@ const Rooms = () => {
                                 <BiSearchAlt className='text-2xl' />
                             </button>
                         </div>
-                        <button className='btn flex items-center gap-2 bg-green-400 w-full md:w-fit'><MdOutlineGroupAdd className='text-2xl' /> Start a Room</button>
+                        <button className='btn bg-green-500 hover:bg-green-600 w-full md:w-fit' onClick={() => setShowModal(!showModal)}><a className='flex items-center gap-2'><MdOutlineGroupAdd className='text-2xl' /> Start a Room</a></button>
+
                     </div>
 
                     <div className='w-full grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-8'>
@@ -41,6 +48,10 @@ const Rooms = () => {
                 </section>
 
             </div>
+
+            {
+                showModal && <CreateRoom setShowModal={setShowModal} />
+            }
 
         </main>
     )

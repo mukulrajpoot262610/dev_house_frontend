@@ -13,6 +13,10 @@ export async function middleware(req) {
         if (accessCookie) {
             return NextResponse.redirect('http://localhost:3000/rooms')
         }
+    } else if (url.includes('/account')) {
+        if (!accessCookie) {
+            return NextResponse.redirect('http://localhost:3000/login')
+        }
     }
 
     return NextResponse.next()
