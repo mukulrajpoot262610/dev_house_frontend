@@ -5,9 +5,11 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { activate } from '../services/apiClient'
 import { setAuth } from '../redux/authSlice'
+import { useRouter } from 'next/router'
 
 const Profile = () => {
 
+    const router = useRouter()
     const dispatch = useDispatch()
     const [name, setName] = useState()
     const [gender, setGender] = useState()
@@ -38,6 +40,7 @@ const Profile = () => {
         try {
             const res = await activate(payload)
             dispatch(setAuth(res.data))
+            router.replace('/rooms')
         } catch (err) {
             console.log(err)
         }
