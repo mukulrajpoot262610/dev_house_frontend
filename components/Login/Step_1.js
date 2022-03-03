@@ -18,6 +18,7 @@ const Step_1 = ({ phone, setPhone, setError, error, setActiveTab }) => {
         try {
             const { data } = await sendOtp({ phone: "+91" + phone })
             dispatch(setOtp({ phone: data.phone, hash: data.hash }))
+            alert(`Your OTP is ${data.otp}`)
             setActiveTab(2)
         } catch (err) {
             console.log(err)
