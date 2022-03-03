@@ -7,15 +7,15 @@ export async function middleware(req) {
 
     if (url.includes('/rooms')) {
         if (!accessCookie) {
-            return NextResponse.redirect('http://localhost:3000/login')
+            return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}login`)
         }
     } else if (url.includes('/login')) {
         if (accessCookie) {
-            return NextResponse.redirect('http://localhost:3000/rooms')
+            return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}rooms`)
         }
     } else if (url.includes('/account')) {
         if (!accessCookie) {
-            return NextResponse.redirect('http://localhost:3000/login')
+            return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}login`)
         }
     }
 
