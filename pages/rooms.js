@@ -1,16 +1,36 @@
 import Head from 'next/head'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { BiSearchAlt } from 'react-icons/bi'
 
 import { MdOutlineGroupAdd } from 'react-icons/md'
 import RoomCard from '../components/Rooms/RoomCard'
-import Image from 'next/image'
 import CreateRoom from '../components/Modal/CreateRoom'
+import { getAllRooms } from '../services/apiClient'
 
 const Rooms = () => {
 
     const [showModal, setShowModal] = useState(false)
+    const [loader, setLoader] = useState(true)
+    const [rooms, setRooms] = useState()
+
+    useEffect(() => {
+        const fetchRoom = async () => {
+
+            try {
+                const { data } = await getAllRooms()
+                setRooms(data.rooms)
+                setLoader(false)
+            } catch (err) {
+                setLoader(false)
+                console.log(err)
+            }
+        }
+
+        fetchRoom()
+    }, [])
+
+    console.log(rooms)
 
     return (
         <main>
@@ -40,10 +60,9 @@ const Rooms = () => {
                     </div>
 
                     <div className='w-full grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-8'>
-                        <RoomCard />
-                        <RoomCard />
-                        <RoomCard />
-                        <RoomCard />
+                        {
+                            loader ? "Loading..." : rooms?.map((e, i) => <RoomCard key={i} data={e} />)
+                        }
                     </div>
                 </section>
 

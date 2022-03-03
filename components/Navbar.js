@@ -39,7 +39,9 @@ const Navbar = () => {
                     isAuth ? <div className='dropdown dropdown-end'>
                         <div tabIndex="0" className="avatar flex items-center gap-2">
                             <div className="w-12 rounded-full border-2 border-green-500">
-                                <Image src={user?.image} height={50} width={50} objectFit="cover" alt="" />
+                                {
+                                    user.image && <Image src={user?.image} height={50} width={50} objectFit="cover" alt="" />
+                                }
                             </div>
                             <BsFillCaretDownFill />
                         </div>
